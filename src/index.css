@@ -10,6 +10,14 @@ body {
   color: #ffffff;
 }
 
+ul {
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
 .Hero {
   width: 100%;
   position: relative;
@@ -27,4 +35,18 @@ body {
 
 .Hero h2 {
   color: crimson;
+}
+
+.movies-list {
+  padding: 10px;
+  display: grid;    
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.movies-list {
+  color: black;
+}
+
+.movies-list img {
+  width: 200px;
 }

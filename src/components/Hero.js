@@ -1,5 +1,5 @@
 import React from 'react';
-
+ 
 function Hero () {
     return (
         <div id="hero" className="Hero" style={{backgroundImage: 'url(https://hdqwalls.com/download/rampage-chinese-poster-2018-u1-2048x1152.jpg)'}}>
@@ -18,5 +18,5 @@ function Hero () {
         </div>
     )
 }
-
+ 
 export default Hero;
