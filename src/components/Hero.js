@@ -1,5 +1,5 @@
 import React from 'react';
- 
+  
 function Hero () {
     return (
         <div id="hero" className="Hero" style={{backgroundImage: 'url(https://hdqwalls.com/download/rampage-chinese-poster-2018-u1-2048x1152.jpg)'}}>
@@ -11,12 +11,14 @@ function Hero () {
                     But a rogue genetic experiment gone awry mutates this gentle ape into a raging creature of enormous size. 
                 </p>
                 <button
-                    className='button'>
+                    className='button'
+                    to='https://www.youtube.com/watch?v=coOKvrsmQiI&t=89s'
+                >
                         View Trailer
                 </button>
             </div>
         </div>
     )
 }
- 
+  
 export default Hero;
