@@ -1,28 +1,29 @@
-*{
+* {
   margin: 0;
   padding: 0;
 }
- 
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Open Sans", sans-serif;
   color: #ffffff;
+  background: #2b2b2b;
 }
- 
+
 ul {
   padding: 0;
 }
- 
+
 li {
   list-style-type: none;
 }
- 
+
 a {
   text-decoration: none;
   color: #000;
 }
- 
+
 .nav {
   display: flex;
   height: 100%;
@@ -42,14 +43,8 @@ a {
 }
 
 .column input {
-  border-radius: 3px;
-  padding: 10px 0;
-  width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.43);
-  font-size: 16px;
-  text-align:center;
 }
- 
+
 .Hero {
   width: 100%;
   position: relative;
@@ -57,7 +52,7 @@ a {
   background-position: center;
   min-height: 600px;
 }
- 
+
 .Hero .content {
   position: relative;
   z-index: 4;
@@ -65,7 +60,7 @@ a {
   left: 10vw;
   top: 10vw;
 }
- 
+
 .Hero h2 {
   color: crimson;
 }
@@ -81,18 +76,18 @@ a {
   color: #555;
   font-size: 1rem;
 }
- 
+
 .movies-list {
   padding: 10px;
-  display: grid;    
+  display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;
 }
- 
+
 .movies-list {
   color: black;
 }
- 
+
 .movies-list img {
   width: 100%;
   border-radius: 10px;
@@ -106,22 +101,22 @@ a {
 
 .list-movie-card h2 {
   color: #555;
-	font-weight: bold;
-	margin-bottom: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .list-movie-card h3 {
   color: #555;
-	font-weight: bold;
-	margin-bottom: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
- 
+
 .text-error {
   color: red;
 }
- 
+
 /* HERO Movie Banner */
- 
+
 .hero-banner {
   display: flex;
   justify-content: center;
@@ -129,20 +124,19 @@ a {
   overflow: hidden;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
- 
+
 .hero-banner img {
   object-fit: cover;
   min-width: 100%;
   height: 500px;
   opacity: 0.8;
 }
- 
+
 .movie-title {
   font-size: 2rem;
 }
 
-.mini-poster img{
-
+.mini-poster img {
 }
 
 .overlay {
@@ -155,8 +149,8 @@ a {
 }
 
 .overlay:hover {
-    opacity: 1;
-    pointer-events: all;
+  opacity: 1;
+  pointer-events: all;
 }
 
 .movie-top-details {
@@ -167,35 +161,35 @@ a {
   top: 40%;
   left: 24%;
 }
- 
+
 .avatar img {
   height: 300px;
   opacity: 1;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
- 
+
 .details {
   color: #fff;
   opacity: 1;
   padding: 0 5px;
   margin: 40px 0;
 }
- 
+
 .rating {
   display: flex;
 }
- 
+
 .voteavg {
   background-color: yellow;
   color: #000;
   display: inline-block;
   padding: 0 5px;
 }
- 
+
 .vote_count {
   padding: 0 5px;
 }
- 
+
 .movie-content {
   display: grid;
   margin: 0 auto;
@@ -205,13 +199,13 @@ a {
   width: 800px;
   margin-top: 150px;
 }
- 
+
 .thumbnail {
   width: 64px;
   border-radius: 5px;
   padding: 0 10px 0 0;
 }
- 
+
 .movie-content li {
   padding: 20px;
   margin: 10px 0;
@@ -224,15 +218,15 @@ a {
   text-align: center;
   align-items: center;
 }
- 
+
 .movie-content h3:before {
   display: block;
-  content: '';
+  content: "";
   height: 10px;
   background-color: yellow;
   margin: 10px 0;
 }
- 
+
 .container {
   margin: 0 auto;
 }

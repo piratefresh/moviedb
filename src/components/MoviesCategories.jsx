@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  fetchMoviesRequest,
+  fetchMoviesCategorieRequest,
   fetchMoviesHeaderRequest
 } from "../actions/movieActions";
 // Components
@@ -21,8 +21,17 @@ class MovieList extends React.Component {
     page: ""
   };
   componentDidMount() {
-    this.props.fetchMoviesRequest();
+    console.log(this.props.match.params.genre);
+    this.props.fetchMoviesCategorieRequest(this.props.match.params.genre);
     this.props.fetchMoviesHeaderRequest();
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log(prevProps.match.params.genre);
+    console.log(this.props.match.params.genre);
+    if (prevProps.match.params.genre !== this.props.match.params.genre) {
+      this.props.fetchMoviesCategorieRequest(this.props.match.params.genre);
+    }
   }
 
   render() {
@@ -53,5 +62,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchMoviesRequest, fetchMoviesHeaderRequest }
+  { fetchMoviesCategorieRequest, fetchMoviesHeaderRequest }
 )(MovieList);

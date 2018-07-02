@@ -1,21 +1,62 @@
-import { SET_CURRENT_MOVIE, GET_MOVIES } from "../actions/types";
+import {
+  FETCH_MOVIES_SUCCESS,
+  FETCH_MOVIE_SEARCH_SUCCESS,
+  FETCH_MOVIE_SUCCESS,
+  FETCH_GENRES_SUCCESS,
+  FETCH_MOVIES_HEADER_SUCCESS,
+  FETCH_MOVIES_CATEGORIE_SUCCESS,
+  FETCH_MOVIES_POPULAR_SUCCESS,
+  FETCH_MOVIES_TOPRATED_SUCCESS
+} from "../types/index";
 
 const initialState = {
-  movie: {},
-  movies: []
+  genres: {},
+  movie: null,
+  movies: [],
+  header: []
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_CURRENT_MOVIE:
+    case FETCH_GENRES_SUCCESS:
       return {
         ...state,
-        movie: action.payload
+        genres: action.data
       };
-    case GET_MOVIES:
+    case FETCH_MOVIE_SEARCH_SUCCESS:
       return {
         ...state,
-        movies: action.payload
+        movies: action.data
+      };
+    case FETCH_MOVIES_CATEGORIE_SUCCESS:
+      return {
+        ...state,
+        movies: action.data
+      };
+    case FETCH_MOVIES_POPULAR_SUCCESS:
+      return {
+        ...state,
+        movies: action.data
+      };
+    case FETCH_MOVIES_TOPRATED_SUCCESS:
+      return {
+        ...state,
+        movies: action.data
+      };
+    case FETCH_MOVIES_HEADER_SUCCESS:
+      return {
+        ...state,
+        header: action.data.results.slice(-5)
+      };
+    case FETCH_MOVIE_SUCCESS:
+      return {
+        ...state,
+        movie: action.data
+      };
+    case FETCH_MOVIES_SUCCESS:
+      return {
+        ...state,
+        movies: action.data
       };
     default:
       return state;

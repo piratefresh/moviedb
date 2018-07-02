@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  fetchMoviesRequest,
+  fetchMoviesTopRatedRequest,
   fetchMoviesHeaderRequest
 } from "../actions/movieActions";
 // Components
@@ -21,7 +21,7 @@ class MovieList extends React.Component {
     page: ""
   };
   componentDidMount() {
-    this.props.fetchMoviesRequest();
+    this.props.fetchMoviesTopRatedRequest();
     this.props.fetchMoviesHeaderRequest();
   }
 
@@ -53,5 +53,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchMoviesRequest, fetchMoviesHeaderRequest }
+  { fetchMoviesTopRatedRequest, fetchMoviesHeaderRequest }
 )(MovieList);
