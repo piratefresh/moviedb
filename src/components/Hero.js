@@ -9,6 +9,9 @@ const HeroWrapper = styled.div`
   background-size: cover;
   background-position: center;
   height: 600px;
+  @media (max-width: 650px) {
+    height: 300px;
+  }
 `;
 const HeroImg = styled.img`
   width: 100%;
@@ -33,6 +36,7 @@ const HeroContent = styled.div`
   justify-content: center;
   color: #fbfbfb;
   width: 400px;
+
   h2 {
     font-size: 3rem;
     font-weight: 700;
@@ -40,6 +44,17 @@ const HeroContent = styled.div`
   p {
     font-size: 1rem;
     font-weight: 400;
+  }
+  @media (max-width: 650px) {
+    height: 250px;
+    width: 200px;
+    bottom: 10%;
+    h2 {
+      font-size: 1.5rem;
+    }
+    p {
+      font-size: 0.7rem;
+    }
   }
 `;
 const Details = styled.div`
@@ -61,23 +76,26 @@ const VoteAvg = styled.div`
 class Hero extends Component {
   render() {
     const { header } = this.props;
+    const overviewLength = 400;
 
     let heroHeaderContent;
     heroHeaderContent = header.map(
-      ({ backdrop_path, overview, title, popularity }, index) => (
+      ({ backdrop_path, overview, title, popularity, id }, index) => (
         <HeroWrapper key={index}>
-          <HeroImg
-            src={`http://image.tmdb.org/t/p/original${backdrop_path}`}
-            alt={title + "poster"}
-          />
-          <Overlay />
-          <HeroContent>
-            <Details>
-              <h2>{title.toUpperCase()}</h2>{" "}
-              <VoteAvg>{popularity.toFixed(0)}</VoteAvg>
-            </Details>
-            <p>{overview}</p>
-          </HeroContent>
+          <a href={`movie/${id}`}>
+            <HeroImg
+              src={`http://image.tmdb.org/t/p/original${backdrop_path}`}
+              alt={title + "poster"}
+            />
+            <Overlay />
+            <HeroContent>
+              <Details>
+                <h2>{title.toUpperCase()}</h2>{" "}
+                <VoteAvg>{popularity.toFixed(0)}</VoteAvg>
+              </Details>
+              <p>{overview.substring(0, overviewLength)}</p>
+            </HeroContent>
+          </a>
         </HeroWrapper>
       )
     );

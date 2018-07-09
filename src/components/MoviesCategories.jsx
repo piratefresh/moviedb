@@ -10,6 +10,8 @@ import Hero from "./Hero";
 import MovieGrid from "./MovieGrid";
 // Styled
 import styled from "styled-components";
+import Button from "./common/Button";
+import ButtonsWrapper from "./common/ButtonWrapper";
 
 const Grid = styled.div`
   display: flex;
@@ -17,21 +19,51 @@ const Grid = styled.div`
 `;
 
 class MovieList extends React.Component {
-  state = {
-    page: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      page: 1
+    };
+    this.nextPage = this.nextPage.bind(this);
+    this.prevPage = this.prevPage.bind(this);
+  }
   componentDidMount() {
-    console.log(this.props.match.params.genre);
-    this.props.fetchMoviesCategorieRequest(this.props.match.params.genre);
+    this.props.fetchMoviesCategorieRequest({
+      page: this.state.page,
+      genre: this.props.match.params.genre
+    });
     this.props.fetchMoviesHeaderRequest();
   }
 
-  componentDidUpdate(prevProps) {
-    console.log(prevProps.match.params.genre);
-    console.log(this.props.match.params.genre);
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.genre !== this.props.match.params.genre) {
-      this.props.fetchMoviesCategorieRequest(this.props.match.params.genre);
+      this.props.fetchMoviesCategorieRequest({
+        page: this.state.page,
+        genre: this.props.match.params.genre
+      });
     }
+    if (this.state.page !== prevState.page) {
+      console.log("increased");
+      this.props.fetchMoviesCategorieRequest({
+        page: this.state.page,
+        genre: this.props.match.params.genre
+      });
+    }
+    return;
+  }
+
+  nextPage() {
+    console.log(this.state.page);
+    this.setState({
+      page: this.state.page + 1
+    });
+  }
+
+  prevPage() {
+    console.log(this.state.page);
+    this.setState({
+      page: this.state.page - 1
+    });
   }
 
   render() {
@@ -49,6 +81,16 @@ class MovieList extends React.Component {
               <MovieGrid movies={movies.results} />
             )}
           </Grid>
+          <ButtonsWrapper>
+            <Button key="next" type="button" onClick={this.nextPage}>
+              Next Page
+            </Button>
+            {this.state.page > 1 ? (
+              <Button key="prev" type="button" onClick={this.prevPage}>
+                Prev Page
+              </Button>
+            ) : null}
+          </ButtonsWrapper>
         </div>
       </div>
     );

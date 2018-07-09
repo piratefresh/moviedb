@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  fetchMoviesPopularRequest,
+  fetchMovieSearchRequest,
   fetchMoviesHeaderRequest
 } from "../actions/movieActions";
 // Components
@@ -18,17 +18,21 @@ const Grid = styled.div`
   justify-content: center;
 `;
 
-class MovieList extends React.Component {
+class MoviesSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1
+      page: 1,
+      query: "lol"
     };
     this.nextPage = this.nextPage.bind(this);
     this.prevPage = this.prevPage.bind(this);
   }
   componentDidMount() {
-    this.props.fetchMoviesPopularRequest({ page: this.state.page });
+    this.props.fetchMovieSearchRequest({
+      page: this.state.page,
+      query: this.state.query
+    });
     this.props.fetchMoviesHeaderRequest();
   }
 
@@ -36,7 +40,10 @@ class MovieList extends React.Component {
     console.log(this.state.page, prevState.page);
     if (this.state.page !== prevState.page) {
       console.log("increased");
-      this.props.fetchMoviesPopularRequest({ page: this.state.page });
+      this.props.fetchMovieSearchRequest({
+        page: this.state.page,
+        query: this.props.match.params.query
+      });
     }
     return;
   }
@@ -93,5 +100,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchMoviesPopularRequest, fetchMoviesHeaderRequest }
-)(MovieList);
+  { fetchMovieSearchRequest, fetchMoviesHeaderRequest }
+)(MoviesSearch);

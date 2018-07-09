@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { auth } from "../firebase/firebase";
+import { db } from "../firebase";
 import {
   fetchGenresRequest,
   fetchMoviesCategorieRequest,
@@ -8,19 +10,42 @@ import {
   fetchMoviesRequest,
   fetchMoviesTopRatedRequest
 } from "../actions/movieActions";
+import { fetchLoginRequest, fetchLogoutRequest } from "../actions/authActions";
 // Components
 import Search from "../components/Search";
 import Dropdown from "../components/nav/Dropdown";
+import SignOutButton from "../components/account/SignOutButton";
 // Styled
 import styled from "styled-components";
+// Font awesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFilter,
+  faSignOutAlt,
+  faUser,
+  faTrophy,
+  faFire,
+  faCalendarAlt
+} from "@fortawesome/free-solid-svg-icons";
+// lodash
+import throttle from "lodash.throttle";
 
 const Nav = styled.nav`
   position: -webkit-sticky;
   position: sticky;
-  background: #2b2b2b;
+  background: #2e293a;
   top: 0;
   z-index: 1000;
+  width: 100%;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  @media (max-width: 650px) {
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    padding: 0;
+    z-index: 1000;
+  }
 `;
 const Navcontent = styled.div`
   margin: 0 200px;
@@ -33,10 +58,10 @@ const Navcontent = styled.div`
     color: #7d48df;
     font-family: "Poppins", sans-serif;
   }
-  @media (max-width: 1000px) {
-    margin: 0;
+  @media (max-width: 950px) {
+    margin: 0 5%;
   }}
-  @media (max-width: 600px) {
+  @media (max-width: 800px) {
     height: 100%;
     font-size: 0.8rem;
     h2 {
@@ -47,12 +72,20 @@ const Navcontent = styled.div`
 const NavUl = styled.ul`
   list-style: none;
   display: flex;
-  justify-content: space-around;
+  width: 100%;
+  justify-content: space-between;
   align-items: baseline;
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     justify-content: space-evenly;
     width: 100%;
   }
+  @media (max-width: 400px) {
+    justify-content: space-evenly;
+    width: 100%;
+  }
+`;
+const NavAuthWrapper = styled.div`
+  display: flex;
 `;
 const NavLink = styled.a`
   display: flex;
@@ -70,11 +103,17 @@ const NavLink = styled.a`
   }
   @media (max-width: 600px) {
     padding: 5% 0;
-    font-size: 0.6rem;
+    font-size: 0.4rem;
     /* NavBar Icon */
     h2 {
       padding-left: 5%;
     }
+  }
+  @media (max-width: 400px) {
+    margin: 0 2%;
+  }
+  @media (max-width: 330px) {
+    font-size: 0.3rem;
   }
 `;
 
@@ -83,13 +122,34 @@ class Navigation extends Component {
     super(props);
     this.state = {
       searchToggled: false,
-      genre: ""
+      genre: "",
+      isMobile: false
     };
     this.onSubmit = this.onSubmit.bind(this);
+    this.onClick = this.onClick.bind(this);
     this.toggleSelected = this.toggleSelected.bind(this);
   }
   componentDidMount() {
+    // Check mobile or not
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
     this.props.fetchGenresRequest();
+  }
+  componentWillUnmount() {
+    window.addEventListener("resize", this.resize.bind(this));
+  }
+
+  resize = throttle(() => {
+    this.setState({
+      isMobile: window.innerWidth <= 800
+    });
+  }, 1000);
+
+  onClick() {
+    auth.signOut().then(() => {
+      this.props.fetchLogoutRequest();
+      this.props.history.push("/");
+    });
   }
   onSubmit() {
     const { genres } = this.props.genres;
@@ -108,22 +168,92 @@ class Navigation extends Component {
   }
   render() {
     const { genres } = this.props.genres;
-    const { history } = this.props;
+    const { isAuthenticated } = this.props.auth;
+    const { isMobile } = this.state;
+    let iconSize = !isMobile ? "lg" : "2x";
+
+    const NavigationAuth = () => (
+      <NavAuthWrapper>
+        <NavLink href="/dashboard">
+          {!isMobile ? (
+            "Dashboard"
+          ) : (
+            <div>
+              <FontAwesomeIcon icon={faUser} size={iconSize} />
+              <p>Profile</p>
+            </div>
+          )}
+        </NavLink>
+        <NavLink onClick={this.onClick}>
+          {!isMobile ? (
+            "Logout"
+          ) : (
+            <div>
+              <FontAwesomeIcon icon={faSignOutAlt} size={iconSize} />
+              <p>Logout</p>
+            </div>
+          )}
+        </NavLink>
+      </NavAuthWrapper>
+    );
+    const NavigationNonAuth = () => (
+      <NavAuthWrapper>
+        {<NavLink href="/account/signin">Sign-In</NavLink>}
+        <NavLink href="/account/signup">Sign-Up</NavLink>
+      </NavAuthWrapper>
+    );
+
+    let NavigationContent;
+    if (isAuthenticated) {
+      NavigationContent = () => <NavigationAuth />;
+    } else {
+      NavigationContent = () => <NavigationNonAuth />;
+    }
 
     return (
       <Nav>
         <Navcontent>
           <NavUl>
-            <NavLink href="/">New</NavLink>
-            <NavLink href="/popular">Popular</NavLink>
+            <NavLink href="/">
+              {!isMobile ? (
+                "Upcoming"
+              ) : (
+                <div>
+                  <FontAwesomeIcon icon={faCalendarAlt} size={iconSize} />
+                  <p>Upcoming</p>
+                </div>
+              )}
+            </NavLink>
+            <NavLink href="/popular">
+              {!isMobile ? (
+                "Popular"
+              ) : (
+                <div>
+                  <FontAwesomeIcon icon={faFire} size={iconSize} />
+                  <p>Popular</p>
+                </div>
+              )}
+            </NavLink>
+            <NavLink href="/toprated" style={{ whiteSpace: "nowrap" }}>
+              {!isMobile ? (
+                "Top Rated"
+              ) : (
+                <div>
+                  <FontAwesomeIcon icon={faTrophy} size={iconSize} />
+                  <p>Top-Rated</p>
+                </div>
+              )}
+            </NavLink>
             <Dropdown
-              title="Categories"
+              title={!isMobile ? "Categories" : "Genres"}
               list={genres}
               toggleItem={this.toggleSelected}
+              isMobile={this.state.isMobile}
+              iconSize={iconSize}
             />
-            <NavLink href={"/toprated"}>Top Rated</NavLink>
+            <Search />
+            <NavigationContent />
           </NavUl>
-          <Search />
         </Navcontent>
       </Nav>
     );
@@ -131,7 +261,8 @@ class Navigation extends Component {
 }
 
 const mapStateToProps = state => ({
-  genres: state.client.genres
+  genres: state.client.genres,
+  auth: state.auth
 });
 
 export default connect(
@@ -141,6 +272,8 @@ export default connect(
     fetchMoviesCategorieRequest,
     fetchMoviesPopularRequest,
     fetchMoviesRequest,
-    fetchMoviesTopRatedRequest
+    fetchMoviesTopRatedRequest,
+    fetchLoginRequest,
+    fetchLogoutRequest
   }
 )(withRouter(Navigation));

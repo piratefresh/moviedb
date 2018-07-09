@@ -9,11 +9,17 @@ import {
   fetchMoviesHeader,
   fetchMoviesCategorie,
   fetchMoviesPopular,
-  fetchMoviesTopRated
+  fetchMoviesTopRated,
+  fetchMoviesById
 } from "../actions/movieActions";
+import { fetchAuth, fetchLogin, fetchLogout } from "../actions/authActions";
 
 function* rootSaga() {
   yield all([
+    takeLatest(TYPES.FETCH_LOGOUT_REQUEST, fetchLogout),
+    takeLatest(TYPES.FETCH_LOGIN_REQUEST, fetchLogin),
+    takeLatest(TYPES.FETCH_MOVIES_BY_ID_REQUEST, fetchMoviesById),
+    takeEvery(TYPES.FETCH_AUTH_REQUEST, fetchAuth),
     takeLatest(TYPES.FETCH_GENRES_REQUEST, fetchGenres),
     takeLatest(TYPES.FETCH_MOVIES_REQUEST, fetchMovies),
     takeLatest(TYPES.FETCH_MOVIES_HEADER_REQUEST, fetchMoviesHeader),

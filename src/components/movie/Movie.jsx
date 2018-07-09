@@ -5,8 +5,15 @@ import Loading from "../Loading";
 // Components
 import MovieHeader from "./MovieHeader";
 import MovieBody from "./MovieBody";
-// styled
+import MovieMedia from "./MovieMedia";
+// Styled
 import styled from "styled-components";
+
+const MovieWrapper = styled.div`
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+`;
 
 class Movie extends React.Component {
   componentDidMount() {
@@ -15,17 +22,16 @@ class Movie extends React.Component {
   }
   render() {
     const { movie } = this.props.movie;
-    console.log(this.props);
     let movieContent;
     if (movie === null) {
       movieContent = <Loading />;
     } else {
-      console.log(this.props.movie);
       movieContent = (
-        <div>
+        <MovieWrapper>
           <MovieHeader movie={movie} />
           <MovieBody movie={movie} />
-        </div>
+          <MovieMedia movie={movie} />
+        </MovieWrapper>
       );
     }
     return <div className="movie-container">{movieContent}</div>;

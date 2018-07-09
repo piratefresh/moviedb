@@ -6,7 +6,8 @@ import {
   FETCH_MOVIES_HEADER_SUCCESS,
   FETCH_MOVIES_CATEGORIE_SUCCESS,
   FETCH_MOVIES_POPULAR_SUCCESS,
-  FETCH_MOVIES_TOPRATED_SUCCESS
+  FETCH_MOVIES_TOPRATED_SUCCESS,
+  FETCH_MOVIES_BY_ID_SUCCESS
 } from "../types/index";
 
 const initialState = {
@@ -54,6 +55,11 @@ export default function(state = initialState, action) {
         movie: action.data
       };
     case FETCH_MOVIES_SUCCESS:
+      return {
+        ...state,
+        movies: action.data
+      };
+    case FETCH_MOVIES_BY_ID_SUCCESS:
       return {
         ...state,
         movies: action.data

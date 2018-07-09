@@ -15,9 +15,15 @@ const HeroBanner = styled.div`
     height: 500px;
     opacity: 0.8;
   }
+  @media (max-width: 650px) {
+    height: 300px;
+  }
 `;
 const MovieTitle = styled.h2`
   font-size: 2rem;
+  @media (max-width: 650px) {
+    font-size: 1rem;
+  }
 `;
 const Overlay = styled.div`
   padding: 20px;
@@ -38,12 +44,26 @@ const MovieTopDetails = styled.div`
   position: absolute;
   top: 40%;
   left: 24%;
+  @media (max-width: 450px) {
+    top: 19%;
+    font-size: 0.8rem;
+  }
+  @media (max-width: 370px) {
+    top: 25%;
+    left: 5%;
+    font-size: 0.8rem;
+  }
 `;
 const Avatar = styled.div`
   img {
     height: 300px;
     opacity: 1;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+  @media (max-width: 650px) {
+    img {
+      height: 200px;
+    }
   }
 `;
 const Details = styled.div`
@@ -64,6 +84,12 @@ const VoteRating = styled.div`
 `;
 const VoteCount = styled.div`
   padding: 0 5px;
+`;
+const Tags = styled.div`
+  display: inline-block;
+  background-color: yellow;
+  color: #000;
+  padding: 0 1%;
 `;
 
 class MovieHeader extends Component {
@@ -92,10 +118,13 @@ class MovieHeader extends Component {
                 <VoteCount>{movie.vote_count} Votes</VoteCount>
               </Rating>
               <p>Runtime: {movie.runtime}</p>
-              <p>Genre: {movie.genres[0].name}</p>
+              {movie.genres.map(genre => {
+                <Tags>{genre.name ? genre.name : null}</Tags>;
+              })}
+              <p>Release Date: {movie.release_date}</p>
             </Details>
           </MovieTopDetails>
-        </HeroBanner>;{" "}
+        </HeroBanner>
       </div>
     );
   }

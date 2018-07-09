@@ -10,6 +10,8 @@ import Hero from "./Hero";
 import MovieGrid from "./MovieGrid";
 // Styled
 import styled from "styled-components";
+import Button from "./common/Button";
+import ButtonsWrapper from "./common/ButtonWrapper";
 
 const Grid = styled.div`
   display: flex;
@@ -17,18 +19,42 @@ const Grid = styled.div`
 `;
 
 class MovieList extends React.Component {
-  state = {
-    page: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      page: 1
+    };
+    this.nextPage = this.nextPage.bind(this);
+    this.prevPage = this.prevPage.bind(this);
+  }
+
   componentDidMount() {
-    this.props.fetchMoviesRequest();
+    this.props.fetchMoviesRequest({ page: this.state.page });
     this.props.fetchMoviesHeaderRequest();
+  }
+
+  componentDidUpdate(prevProp, prevState) {
+    if (this.state.page !== prevState.page) {
+      this.props.fetchMoviesRequest({ page: this.state.page });
+    }
+    return;
+  }
+
+  nextPage() {
+    this.setState({
+      page: this.state.page + 1
+    });
+  }
+
+  prevPage() {
+    this.setState({
+      page: this.state.page - 1
+    });
   }
 
   render() {
     const { movies } = this.props.movies;
     const { header } = this.props.header;
-
     return (
       <div>
         {!header ? <Loading /> : <Hero header={header} />}
@@ -40,6 +66,16 @@ class MovieList extends React.Component {
               <MovieGrid movies={movies.results} />
             )}
           </Grid>
+          <ButtonsWrapper>
+            <Button key="next" type="button" onClick={this.nextPage}>
+              Next Page
+            </Button>
+            {this.state.page > 1 ? (
+              <Button key="prev" type="button" onClick={this.prevPage}>
+                Prev Page
+              </Button>
+            ) : null}
+          </ButtonsWrapper>
         </div>
       </div>
     );
